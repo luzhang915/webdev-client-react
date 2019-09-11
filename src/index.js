@@ -1,84 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 
-import HelloWorld from './HelloWorld';
-import LessonTabs from './LessonTabs';
-import TopicPills from "./TopicPills";
+import WhiteBoard from "./containers/WhiteBoard";
+import HelloWorld from "./HelloWorld";
+import CourseEditor from "./containers/courses/CourseEditor";
 
-class ModuleListItem extends React.Component {
+class App extends React.Component {
     render() {
         return (
-            <li className="list-group-item">
-                {this.props.title}
-                <span className="pull-right">
-                    <i style={{'margin-right': '8px'}} className="fa fa-trash"/>
-                    <i className="fa fa-pencil"/>
-                </span>
-            </li>
-        )
-    }
-}
-
-class ModuleList extends React.Component {
-    render() {
-        return (
-            <div>
-           <h1>Module List</h1>
-            <ul className="list-group">
-                <ModuleListItem title="Module 1"/>
-                <ModuleListItem title="Module 2"/>
-                <ModuleListItem title="Module 3"/>
-                <ModuleListItem title="Module 4"/>
-               </ul>
-            </div>
-        )
-    }
-}
-
-class CourseCard extends React.Component {
-    render() {
-        return (
-            <div className="card" style={{"width": "18rem;"}}>
-                <div className="card" styles={{width: '18rem'}}>
-                    <img className="card-img-top"
-                         src="https://picsum.photos/300/200"/>
-                    <div className="card-body">
-                        <h5 className="card-title">Card title</h5>
-                        <p className="card-text">Card text.</p>
-                        <a href="#" className="btn btn-primary">More...</a>
-                    </div>
+            <Router>
+                <div>
+                    <Link to="/whiteboard"> WhiteBoard </Link> |
+                    <Link to="/hello"> Hello </Link>
+                    <Route path='/whiteboard' component={WhiteBoard}/>
+                    <Route path='/hello' component={HelloWorld}/>
+                    <Route path='/course/:courseId' component={CourseEditor}/>
                 </div>
-            </div>
-        )
-    }
-}
-
-class WhiteBoard extends React.Component {
-    render() {
-        return (
-            <div className="container-fluid">
-
-                <h1>Whiteboard</h1>
-                <TopicPills/>
-
-                <LessonTabs/>
-
-                <ModuleList />
-
-                <div className="card-deck">
-                <CourseCard />
-                <CourseCard />
-                <CourseCard />
-                <CourseCard />
-                </div>
-            </div>
+            </Router>
         )
     }
 }
 
 ReactDOM.render(
-    <WhiteBoard/>,
+    <App/>,
     document.getElementById('root')
 );
