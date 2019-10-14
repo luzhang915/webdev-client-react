@@ -1,8 +1,9 @@
 import React from 'react';
 
-import CourseCard from "../../CourseCard";
 import CourseRow from "./CourseRow";
 import CourseService from "../../services/CourseService";
+
+import './CourseListStyle.css';
 
 class CourseList extends React.Component {
     constructor() {
@@ -10,7 +11,16 @@ class CourseList extends React.Component {
         this.courseService = CourseService.instance;
         this.state = {
             courses: [],
-            newCourse: {}
+            newCourse: {
+                title: "",
+                create_by: "me",
+                instructor: "",
+                seats: 0
+            },
+            title: "",
+            create_by: "me",
+            instructor: "",
+            seats: 0
         };
     }
 
@@ -22,19 +32,55 @@ class CourseList extends React.Component {
     }
 
     titleFormChanged = (event) => {
-        this.setState({newCourse:{
+        this.setState({
             title: event.target.value
-            }})
+        })
+    };
+
+    create_byFormChanged = (event) => {
+        this.setState({
+            create_by: event.target.value
+        })
+    };
+
+    instructorFormChanged = (event) => {
+        this.setState({
+            instructor: event.target.value
+        })
+    };
+
+    seatsFormChanged = (event) => {
+        this.setState({
+            seats: event.target.value
+        })
     };
 
     createCourse = () => {
+        this.setState({
+            newCourse: {
+                title: this.state.title,
+                create_by: this.state.create_by,
+                instructor: this.state.instructor,
+                seats: this.state.seats
+            }
+        });
         this.courseService.createCourse(this.state.newCourse)
-            .then((course) => {
+            .then(() => {
                 this.courseService.findAllCourses()
                     .then((courses) => {
                         this.setState({courses:courses})
                     })
-            })
+            });
+        this.clearInput();
+    };
+
+    clearInput = () => {
+        this.setState({
+            title: "",
+            create_by: "",
+            instructor: "",
+            seats: 0
+        });
     };
 
     deleteCourse = (courseId) => {
@@ -47,32 +93,25 @@ class CourseList extends React.Component {
             });
     };
 
-    // render() {
-    //     return (
-    //         <div className="container">
-    //             <h2>Course List</h2>
-    //             <div className="card-deck">
-    //                 <CourseCard />
-    //                 <CourseCard />
-    //                 <CourseCard />
-    //                 <CourseCard />
-    //             </div>
-    //         </div>
-    //     )
-    // }
-
     render() {
         return (
-            <div className="table-responsive-sm">
+            <div className="container-fluid">
                 <h2>Course List</h2>
-                <table className="table table-hover">
+                <div className="table-responsive">
+                <table className="table">
                     <thead>
-                        <tr className="thead-dark">
-                            <th scope="col">Title</th>
-                            <th scope="col"></th>
+                        <tr className="thead-dark ">
+                            <th>Course Title</th>
+                            <th>Created By</th>
+                            <th>Instrctor</th>
+                            <th>Seats Capacity</th>
+                            <th></th>
                         </tr>
                         <tr>
-                            <th><input onChange={this.titleFormChanged} className="form-control" placeholder="CS0000"/></th>
+                            <th><input ref="titleInput" onChange={this.titleFormChanged} className="form-control" placeholder={this.state.title}/></th>
+                            <th><input ref="create_byInput" onChange={this.create_byFormChanged} className="form-control" placeholder={this.state.create_by}/></th>
+                            <th><input ref="instructorInput" onChange={this.instructorFormChanged} className="form-control" placeholder="Jane Doe"/></th>
+                            <th><input ref="seatsInput" onChange={this.seatsFormChanged} className="form-control" placeholder="100"/></th>
                             <th><button onClick={this.createCourse} className="btn btn-primary">Add</button></th>
                         </tr>
                     </thead>
@@ -86,6 +125,7 @@ class CourseList extends React.Component {
                     }
                     </tbody>
                 </table>
+                </div>
             </div>
         )
     }

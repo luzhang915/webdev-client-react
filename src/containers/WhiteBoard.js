@@ -14,12 +14,6 @@ class WhiteBoard extends React.Component {
 
                 <CourseList />
 
-                <TopicPills/>
-
-                <LessonTabs/>
-
-                <ModuleList />
-
             </div>
         )
     }

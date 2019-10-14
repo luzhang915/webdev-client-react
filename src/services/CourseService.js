@@ -47,6 +47,10 @@ class CourseService {
             return response;
         })
     }
+
+    createModule(module) {
+
+    }
 }
 
 export default CourseService;

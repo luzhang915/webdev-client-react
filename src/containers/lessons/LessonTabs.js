@@ -18,20 +18,19 @@ class LessonTabs extends React.Component {
     render() {
         return (
             <div>
-                <h4>{this.props.module.title} Lession Tabs</h4>
                 <ul className="nav nav-tabs">
-                    {this.props.module.lessons.map(
+                    {(this.props.module!=null) ? this.props.module.lessons.map(
                         (lesson,i) => {
                             return (
                                 <li key={i} className="nav-item">
                                     <a onClick={ () => this.selectLesson(i)}
-                                       className="nav-link active" href="#">{lesson.title}</a>
+                                       className="nav-link" href="#">{lesson.title}</a>
                                 </li>
                             )
                         }
-                    )}
+                    ) : null}
                 </ul>
-                <TopicPills lesson={this.props.module.lessons[this.state.selectedLessonIndex]}/>
+                <TopicPills lesson={(this.props.module!=null) ? this.props.module.lessons[this.state.selectedLessonIndex] : null}/>
             </div>
         )
     }
